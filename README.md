@@ -1,142 +1,112 @@
-Static Website Hosting on AWS (S3 + CloudFront + Route 53)
-Overview
+# Static Website Hosting on AWS (S3 + CloudFront + Route 53)
 
-This project demonstrates how to design, deploy, and operate a secure, globally distributed static website on AWS using Amazon S3, CloudFront, Route 53, and ACM.
+This project demonstrates how to design, deploy, and operate a **secure, globally distributed static website** on AWS using modern cloud best practices.
 
-The solution follows AWS best practices for security, performance, and scalability while remaining simple and cost-effective.
-It was implemented end-to-end, including domain management, HTTPS, encryption, and CI/CD-style updates from GitHub.
+The site is hosted on Amazon S3, delivered through Amazon CloudFront for HTTPS and performance, and accessible via a custom domain managed with Amazon Route 53. Website content is version-controlled in GitHub and deployed to AWS in a repeatable, production-style workflow.
 
-Architecture Summary
+---
 
-Amazon S3 hosts static website assets (HTML, CSS, images)
+## Architecture Overview
 
-Amazon CloudFront provides HTTPS, caching, and global content delivery
+The architecture follows AWS best practices for static web hosting:
 
-AWS Certificate Manager (ACM) manages SSL/TLS certificates
+- **Amazon S3** stores static website assets (HTML, CSS, images)
+- **Amazon CloudFront** provides HTTPS, CDN caching, and edge delivery
+- **AWS Certificate Manager (ACM)** issues and manages TLS certificates
+- **Amazon Route 53** handles DNS resolution for the custom domain
+- **GitHub** stores source code and deployment documentation
 
-Amazon Route 53 handles DNS routing
+End users access the site securely via HTTPS through CloudFront, while S3 remains private and protected.
 
-GitHub serves as the source of truth for website code
+---
 
-High-Level Architecture Flow
+## Key AWS Services Used
 
-User requests the website via a custom domain
+- Amazon S3 (static content storage)
+- Amazon CloudFront (CDN + HTTPS)
+- AWS Certificate Manager (TLS certificates)
+- Amazon Route 53 (DNS)
+- IAM (secure access control)
 
-DNS resolves through Route 53
+---
 
-CloudFront serves cached content over HTTPS
+## Domain & DNS Strategy
 
-CloudFront fetches origin content from S3 when needed
+- Domain purchased externally (Squarespace)
+- Nameservers delegated to Route 53
+- Route 53 hosted zone manages all DNS records
+- Root and `www` domains point to CloudFront using Alias records
 
-S3 stores encrypted static files securely
+This approach allows AWS to fully manage routing, SSL, and performance while keeping domain ownership flexible.
 
-AWS Services Used
-Service	Purpose
-Amazon S3	Static website storage
-Amazon CloudFront	CDN, HTTPS termination
-AWS Certificate Manager	SSL/TLS certificates
-Amazon Route 53	DNS management
-GitHub	Source control & deployment workflow
-Security Design
+---
 
-S3 Default Encryption enabled using SSE-S3
+## Security Design
 
-Bucket Key disabled (not cost-effective for static websites)
+Security is intentionally layered:
 
-Public access blocked at the bucket level
+- **S3 bucket is not public**
+- Access is restricted to CloudFront only
+- **Default encryption enabled (SSE-S3)**
+- HTTPS enforced at the CDN level
+- TLS certificates managed by ACM (no manual renewals)
 
-CloudFront Origin Access Control (OAC) restricts direct S3 access
+This prevents direct bucket access and aligns with AWS security best practices.
 
-HTTPS enforced via CloudFront viewer policies
+---
 
-No hard-coded secrets stored in repository
+## Deployment Workflow
 
-Deployment Process
+1. Website files are stored and versioned in GitHub
+2. Changes are committed locally
+3. Static assets are uploaded to S3
+4. CloudFront caches are invalidated when needed
+5. DNS routes traffic to CloudFront automatically
 
-Static site files are stored in a GitHub repository
+This keeps deployments simple, auditable, and repeatable.
 
-Updates are pushed to GitHub
+---
 
-Files are uploaded to the S3 bucket (manually or via automation)
+## Why This Architecture
 
-CloudFront automatically serves updated content
+This design was chosen because it is:
 
-Cache invalidation used when immediate refresh is required
+- **Low cost** (no servers, no EC2)
+- **Highly available** (global edge locations)
+- **Secure by default**
+- **Production-grade**
+- **Scalable without redesign**
 
-DNS & Domain Configuration
+It mirrors how many real-world companies host marketing pages, landing pages, and documentation sites.
 
-Domain purchased via third-party registrar (Squarespace)
+---
 
-DNS hosted in Amazon Route 53
+## Skills Demonstrated
 
-Registrar nameservers updated to Route 53
+- Cloud architecture design
+- Static website hosting on AWS
+- CDN configuration and caching strategy
+- DNS and domain management
+- TLS/HTTPS implementation
+- S3 security hardening
+- GitHub-based project documentation
+- Production-style deployment thinking
 
-Alias A-record points to CloudFront distribution
+---
 
-Encryption & Compliance
+## Future Enhancements
 
-At-rest encryption: SSE-S3
+Potential improvements include:
 
-In-transit encryption: TLS 1.2+ via CloudFront
+- CI/CD with GitHub Actions
+- Infrastructure as Code (Terraform)
+- Custom error pages
+- Monitoring with CloudWatch
+- WAF integration for security filtering
 
-Least-privilege IAM access model
+---
 
-Aligns with AWS Well-Architected Framework (Security & Reliability pillars)
+## Project Purpose
 
-Cost Considerations
+This project was built as a **hands-on cloud engineering exercise** to demonstrate practical AWS knowledge beyond certifications, focusing on real-world architecture, security, and deployment patterns.
 
-S3 static hosting: minimal monthly cost
-
-CloudFront: pay-per-use CDN pricing
-
-Route 53: low fixed hosted zone fee
-
-ACM certificates: free
-
-Designed to stay within low-cost personal project budgets
-
-Key Skills Demonstrated
-
-AWS Cloud Architecture
-
-DNS & Domain Management
-
-HTTPS & Certificate Management
-
-Cloud Security Best Practices
-
-CDN & Performance Optimization
-
-Infrastructure Design & Documentation
-
-GitHub-based deployment workflow
-
-Why This Project Matters
-
-This project mirrors real-world production patterns used by companies hosting marketing sites, documentation portals, and lightweight web applications.
-
-It demonstrates the ability to:
-
-Design secure cloud architectures
-
-Work across multiple AWS services
-
-Make cost-aware architectural decisions
-
-Document systems clearly for technical stakeholders
-
-Future Enhancements
-
-GitHub Actions for automated deployments
-
-Infrastructure as Code using Terraform or AWS CDK
-
-Monitoring with CloudWatch metrics
-
-WAF integration for enhanced security
-
-Author
-
-Built and maintained by Gage
-Cloud / Data / Systems Consultant
-AWS-focused infrastructure project
