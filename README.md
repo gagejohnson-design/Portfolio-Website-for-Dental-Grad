@@ -1,4 +1,4 @@
-# Static Portfolio Website on AWS (S3 + CloudFront + Route 53 + GitHub Actions)
+# Static Portfolio Website on AWS for Upcoming Dental Grad
 
 ## Project Overview
 This project documents the design, deployment, and automation of a production-grade static website hosted on AWS. The website was created for my girlfriend, who is currently in dental school and preparing for her board exams in Summer 2026. The goal was to provide her with a professional, reliable personal site she can use during graduation, residency applications, and early career networking.
