@@ -48,6 +48,96 @@ From a technical perspective, this project demonstrates my ability to:
 
 This was not a demo project — it was built for real use, real users, and long-term value.
 
+## Architecture Overview
+
+GitHub Repository (production branch)
+|
+| GitHub Actions (OIDC)
+v
+Amazon S3 (Static Website Hosting)
+|
+v
+Amazon CloudFront (HTTPS + CDN)
+|
+v
+Amazon Route 53 (Custom Domain DNS)
+
 ---
 
-## Architecture Overview
+## Technologies Used
+
+### AWS Services
+- **Amazon S3**
+  - Static website hosting
+  - Default encryption enabled (SSE-S3)
+- **Amazon CloudFront**
+  - Global content delivery (CDN)
+  - HTTPS enforcement
+  - Cache invalidation on deploy
+- **AWS Certificate Manager (ACM)**
+  - TLS certificate for custom domain
+- **Amazon Route 53**
+  - DNS management and domain routing
+- **AWS IAM**
+  - OIDC-based role for GitHub Actions
+  - No long-lived AWS credentials
+
+### DevOps & Automation
+- **GitHub Actions**
+  - Automated deployments on push to `production` branch
+  - Secure authentication using OpenID Connect (OIDC)
+- **CloudFront Cache Invalidation**
+  - Ensures updates propagate immediately worldwide
+
+### Web Technologies
+- HTML
+- CSS
+- Static asset hosting
+
+---
+
+## Deployment Workflow
+1. Developer pushes changes to the `production` branch  
+2. GitHub Actions authenticates to AWS using OIDC  
+3. Website files are synced to the S3 bucket  
+4. CloudFront cache is invalidated  
+5. Updated content is served globally over HTTPS  
+
+---
+
+## Security Considerations
+- No AWS access keys stored in GitHub
+- IAM role scoped to least-privilege permissions
+- S3 bucket encrypted at rest
+- CloudFront enforces HTTPS-only access
+- Public access limited to static content delivery
+
+---
+
+## Impact
+
+### Personal Impact
+This project provides a polished, professional web presence for my girlfriend as she completes dental school and prepares for board examinations, graduation, and early-career opportunities. The site serves as a long-term professional asset that can evolve alongside her career, supporting applications, networking, and personal branding.
+
+### Professional / Technical Impact
+From an engineering perspective, this project demonstrates:
+- Real-world AWS architecture used in production environments
+- Secure CI/CD pipelines leveraging modern authentication (OIDC)
+- Cloud security best practices (least privilege, encryption, HTTPS)
+- Ability to translate a non-technical personal need into a scalable technical solution
+- End-to-end ownership across design, implementation, deployment, and documentation
+
+---
+
+## Future Enhancements
+- Infrastructure as Code (Terraform)
+- Automated frontend testing
+- Custom error pages and centralized logging
+- Analytics integration
+- AWS WAF for additional edge security
+
+---
+
+## Author
+Created and maintained by **Gage**  
+ERP / Cloud / Data Consultant
